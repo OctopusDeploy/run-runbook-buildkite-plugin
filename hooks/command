@@ -28,9 +28,8 @@ function plugin_read_list_into_result() {
   [[ ${#result[@]} -gt 0 ]] || return 1
 }
 
-function plugin_read_list_into_commaseparated_string() {
+function plugin_read_list_into_csv_string {
   local IFS=,
-  shift
   echo "$*"
 }
 
@@ -60,7 +59,7 @@ fi
 
 #exclude_machines:
 if plugin_read_list_into_result BUILDKITE_PLUGIN_RUN_RUNBOOK_EXCLUDE_MACHINES ; then
-  cmd+=( "--excludeMachines" plugin_read_list_into_commaseparated_string BUILDKITE_PLUGIN_RUN_RUNBOOK_EXCLUDE_MACHINES )
+  cmd+=( "--excludeMachines" $(plugin_read_list_into_csv_string "${result[@]}") )
 fi
 
 #force_package_download:
@@ -155,7 +154,7 @@ fi
 
 #specific_machines:
 if plugin_read_list_into_result BUILDKITE_PLUGIN_RUN_RUNBOOK_SPECIFIC_MACHINES ; then
-  cmd+=( "--specificMachines" plugin_read_list_into_commaseparated_string BUILDKITE_PLUGIN_RUN_RUNBOOK_SPECIFIC_MACHINES )
+  cmd+=( "--specificMachines" $(plugin_read_list_into_csv_string "${result[@]}") )
 fi
 
 #tenants:
@@ -203,7 +202,7 @@ if [[ -n "${BUILDKITE_PLUGIN_RUN_RUNBOOK_API_KEY:-}" ]]; then
     maskedArgs+=( "--apiKey" "SECRET" )
 fi
 
-echo "+++ :octopus-deploy: Running create-release"
+echo "+++ :octopus-deploy: Running run-runbook"
 echo "Running command: ${cmd[@]} ${maskedArgs[@]}"
 
 octo ${cmd[@]} ${args[@]}
