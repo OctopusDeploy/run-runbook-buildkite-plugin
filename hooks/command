@@ -42,7 +42,7 @@ fi
 
 #config_file:
 if [[ -n "${BUILDKITE_PLUGIN_RUN_RUNBOOK_CONFIG_FILE:-}" ]]; then
-    cmd+=( "--configFile" "'${BUILDKITE_PLUGIN_RUN_RUNBOOK_CONFIG_FILE}'")
+    cmd+=( "--configFile" "\"${BUILDKITE_PLUGIN_RUN_RUNBOOK_CONFIG_FILE}\"")
 fi
 
 #debug:
@@ -53,13 +53,13 @@ fi
 #environments:
 if plugin_read_list_into_result BUILDKITE_PLUGIN_RUN_RUNBOOK_ENVIRONMENTS ; then
   for environment in "${result[@]}" ; do
-    cmd+=( "--environment" "'${environment}'" )
+    cmd+=( "--environment" "\"${environment}\"" )
   done
 fi
 
 #exclude_machines:
 if plugin_read_list_into_result BUILDKITE_PLUGIN_RUN_RUNBOOK_EXCLUDE_MACHINES ; then
-  cmd+=( "--excludeMachines" "'$(plugin_read_list_into_csv_string "${result[@]}")'" )
+  cmd+=( "--excludeMachines" "\"$(plugin_read_list_into_csv_string "${result[@]}")\"" )
 fi
 
 #force_package_download:
@@ -89,12 +89,12 @@ fi
 
 #no_run_after:
 if [[ -n "${BUILDKITE_PLUGIN_RUN_RUNBOOK_NO_RUN_AFTER:-}" ]]; then
-    cmd+=( "--noRunAfter" "'${BUILDKITE_PLUGIN_RUN_RUNBOOK_NO_RUN_AFTER}'" )
+    cmd+=( "--noRunAfter" "\"${BUILDKITE_PLUGIN_RUN_RUNBOOK_NO_RUN_AFTER}\"" )
 fi
 
 #project:
 if [[ -n "${BUILDKITE_PLUGIN_RUN_RUNBOOK_PROJECT:-}" ]]; then
-    cmd+=( "--project" "'${BUILDKITE_PLUGIN_RUN_RUNBOOK_PROJECT}'" )
+    cmd+=( "--project" "\"${BUILDKITE_PLUGIN_RUN_RUNBOOK_PROJECT}\"" )
 fi
 
 #proxy:
@@ -114,17 +114,17 @@ fi
 
 #raw_log_file:
 if [[ -n "${BUILDKITE_PLUGIN_RUN_RUNBOOK_RAW_LOG_FILE:-}" ]]; then
-    cmd+=( "--rawLogFile" "'${BUILDKITE_PLUGIN_RUN_RUNBOOK_RAW_LOG_FILE}'" )
+    cmd+=( "--rawLogFile" "\"${BUILDKITE_PLUGIN_RUN_RUNBOOK_RAW_LOG_FILE}\"" )
 fi
 
 #run_at:
 if [[ -n "${BUILDKITE_PLUGIN_RUN_RUNBOOK_RUN_AT:-}" ]]; then
-    cmd+=( "--runAt" "'${BUILDKITE_PLUGIN_RUN_RUNBOOK_RUN_AT}'" )
+    cmd+=( "--runAt" "\"${BUILDKITE_PLUGIN_RUN_RUNBOOK_RUN_AT}\"" )
 fi
 
 #runbook:
 if [[ -n "${BUILDKITE_PLUGIN_RUN_RUNBOOK_RUNBOOK:-}" ]]; then
-    cmd+=( "--runbook" "'${BUILDKITE_PLUGIN_RUN_RUNBOOK_RUNBOOK}'" )
+    cmd+=( "--runbook" "\"${BUILDKITE_PLUGIN_RUN_RUNBOOK_RUNBOOK}\"" )
 fi
 
 #run_timeout:
@@ -139,35 +139,35 @@ fi
 
 #skip:
 if [[ -n "${BUILDKITE_PLUGIN_RUN_RUNBOOK_SKIP:-}" ]]; then
-    cmd+=( "--skip" "'${BUILDKITE_PLUGIN_RUN_RUNBOOK_SKIP}'" )
+    cmd+=( "--skip" "\"${BUILDKITE_PLUGIN_RUN_RUNBOOK_SKIP}\"" )
 fi
 
 #snapshot:
 if [[ -n "${BUILDKITE_PLUGIN_RUN_RUNBOOK_SNAPSHOT:-}" ]]; then
-    cmd+=( "--snapshot" "'${BUILDKITE_PLUGIN_RUN_RUNBOOK_SNAPSHOT}'" )
+    cmd+=( "--snapshot" "\"${BUILDKITE_PLUGIN_RUN_RUNBOOK_SNAPSHOT}\"" )
 fi
 
 #space:
 if [[ -n "${BUILDKITE_PLUGIN_RUN_RUNBOOK_SPACE:-}" ]]; then
-    cmd+=( "--space" "'${BUILDKITE_PLUGIN_RUN_RUNBOOK_SPACE}'" )
+    cmd+=( "--space" "\"${BUILDKITE_PLUGIN_RUN_RUNBOOK_SPACE}\"" )
 fi
 
 #specific_machines:
 if plugin_read_list_into_result BUILDKITE_PLUGIN_RUN_RUNBOOK_SPECIFIC_MACHINES ; then
-  cmd+=( "--specificMachines" "'$(plugin_read_list_into_csv_string "${result[@]}")'" )
+  cmd+=( "--specificMachines" "\"$(plugin_read_list_into_csv_string "${result[@]}")\"" )
 fi
 
 #tenants:
 if plugin_read_list_into_result BUILDKITE_PLUGIN_RUN_RUNBOOK_TENANTS ; then
   for tenant in "${result[@]}" ; do
-    cmd+=( "--tenant" "'${tenant}'" )
+    cmd+=( "--tenant" "\"${tenant}\"" )
   done
 fi
 
 #tenant_tags:
 if plugin_read_list_into_result BUILDKITE_PLUGIN_RUN_RUNBOOK_TENANT_TAGS ; then
   for tag in "${result[@]}" ; do
-    cmd+=( "--tenantTag" "'${tag}'" )
+    cmd+=( "--tenantTag" "\"${tag}\"" )
   done
 fi
 
@@ -179,7 +179,7 @@ fi
 #variable:
 if plugin_read_list_into_result BUILDKITE_PLUGIN_RUN_RUNBOOK_VARIABLES ; then
   for variable in "${result[@]}" ; do
-    cmd+=( "--variable" "'${variable}'" )
+    cmd+=( "--variable" "\"${variable}\"" )
   done
 fi
 
@@ -192,13 +192,13 @@ args=()
 maskedArgs=()
 #server:
 if [[ -n "${BUILDKITE_PLUGIN_RUN_RUNBOOK_SERVER:-}" ]]; then
-    args+=( "--server" "'${BUILDKITE_PLUGIN_RUN_RUNBOOK_SERVER}'" )
-    maskedArgs+=( "--server" "'${BUILDKITE_PLUGIN_RUN_RUNBOOK_SERVER}'" )
+    args+=( "--server" "\"${BUILDKITE_PLUGIN_RUN_RUNBOOK_SERVER}\"" )
+    maskedArgs+=( "--server" "\"${BUILDKITE_PLUGIN_RUN_RUNBOOK_SERVER}\"" )
 fi
 
 #api_key:
 if [[ -n "${BUILDKITE_PLUGIN_RUN_RUNBOOK_API_KEY:-}" ]]; then
-    args+=( "--apiKey" "'${BUILDKITE_PLUGIN_RUN_RUNBOOK_API_KEY}'" )
+    args+=( "--apiKey" "\"${BUILDKITE_PLUGIN_RUN_RUNBOOK_API_KEY}\"" )
     maskedArgs+=( "--apiKey" "SECRET" )
 fi
 
