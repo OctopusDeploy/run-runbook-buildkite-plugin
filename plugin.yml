@@ -1,0 +1,123 @@
+name: Octopus Deploy Run Runbook
+description: Buildkite Plugin to run a runbook in Octopus Deploy
+author: https://github.com/OctopusDeploy
+requirements:
+  - octo
+configuration:
+  properties:
+    api_key:
+      type: string
+      description: 'The API key used to access Octopus Deploy. You must provide an API key or set the `OCTOPUS_CLI_API_KEY` environment variable. If the guest account is enabled, a key of API-GUEST may be used. It is strongly recommended that this value retrieved from an environment variable.'
+    cancel_on_timeout:
+      type: boolean
+      default: false
+      description: 'Cancel the deployment if the deployment_timeout is exceeded (the default timeout is 10 minutes).'
+    config_file:
+      type: string
+      description: 'The path to a configuration file of default values with one "key=value" per line.'
+    debug:
+      type: boolean
+      default: false
+      description: 'Enable debug logging.'
+    environments:
+      type: [string, array]
+      description: 'A single environment or a list of environments in Octopus Deploy in which to run (i.e. "Dev,Test,Prod").'
+    exclude_machines:
+      type: [string, array]
+      description: 'A machine name or a list of machine names to exclude in the deployed environment. If empty, all machines in the environment will be considered.'
+    force_package_download:
+      type: boolean
+      default: false
+      description: 'Force download of installed packages.'
+    guided_failure:
+      type: boolean
+      default: false
+      description: 'Use Guided Failure mode.'
+    ignore_ssl_errors:
+      type: boolean
+      default: false
+      description: 'Ignore certificate errors when communicating with Octopus Deploy. Warning: enabling this option creates a security vulnerability.'
+    log_level:
+      enum:
+        - verbose
+        - debug
+        - information
+        - warning
+        - error
+        - fatal
+      default: 'debug'
+      description: 'The log level; valid options are "verbose", "debug", "information", "warning", "error", and "fatal".'
+    no_raw_log:
+      type: boolean
+      default: false
+      description: 'Print the raw log of failed tasks.'
+    no_run_after:
+      type: string
+      description: 'The time at which scheduled runbook run should expire, specified as any valid DateTimeOffset format, and assuming the time zone is the current local time zone.'
+    project:
+      type: string
+      description: 'The name or ID of the project associated with this runbook.'
+    proxy:
+      type: string
+      description: 'The URL of a proxy to use (i.e. https://proxy.example.com).'
+    proxy_password:
+      type: string
+      description: 'The password used to connect to a proxy. It is strongly recommended to retrieve this value from an environment variable. If proxy_username and proxy_password are omitted and proxy URL is specified, the default credentials are used.'
+    proxy_username:
+      type: string
+      description: 'The username used to connect to a proxy. It is strongly recommended to retrieve this value from an environment variable.'
+    raw_log_file:
+      type: string
+      description: 'Redirect the raw log of failed tasks to a file.'
+    run_at:
+      type: string
+      description: 'The time at which runbook run should start (scheduled run), specified as any valid DateTimeOffset format, and assuming the time zone is the current local time zone.'
+    runbook:
+      type: string
+      description: 'The name or ID of the runbook. If the name is supplied, the project input value must also be specified.'
+    run_timeout:
+      type: string
+      default: '00:10:00'
+      description: 'The maximum length of time that the console session will wait for the runbook run to finish. Note: This will not stop the run. This input requires the wait_for_run input value to be true (format: HH:MM:SS). The default is 10 minutes.'
+    server:
+      type: string
+      description: 'The base URL hosting Octopus Deploy (i.e. "https://octopus.example.com/"). It is recommended to retrieve this value from the `OCTOPUS_CLI_SERVER` environment variable.'
+    show_progress:
+      type: boolean
+      default: false
+      description: 'Show progress of the runbook.'
+    skip:
+      type: string
+      description: 'Skip a step by name.'
+    snapshot:
+      type: string
+      description: 'Name or ID of the snapshot to run. If not supplied, the command will attempt to use the published snapshot'
+    space:
+      type: string
+      description: 'The name or ID of a space within which this command will be executed. If omitted, the default space will be used.'
+    specific_machines:
+      type: [string, array]
+      description: 'A machine name or a list of machine names to target in the deployed environment. If not specified all machines in the environment will be considered.'
+    tenant:
+      type: [string, array]
+      description: 'A tenant name or ID or a list of tenant names or IDs to create a deployment for, or use a wildcard ("*") to deploy to all tenants who are ready for this release (according to lifecycle).'
+    tenant_tag:
+      type: [string, array]
+      description: 'A tag or a list of tags to create a deployment for tenants matching the specified tags.'
+    timeout:
+      type: integer
+      default: 600
+      description: 'A timeout value in seconds for network operations.'
+    variable:
+      type: [string, array]
+      description: 'Values for any prompted variables in the format, Label:Value. For JSON values, embedded quotation marks should be escaped with a backslash.'
+    wait_for_run:
+      type: boolean
+      default: false
+      description: 'Indicates whether or not to wait synchronously for deployment to finish.'
+
+  required:
+    - project
+    - runbook
+    - environment
+  additionalProperties: false

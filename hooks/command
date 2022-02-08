@@ -1,0 +1,209 @@
+#!/bin/bash
+set -euo pipefail
+
+if [[ "${BUILDKITE_PLUGIN_RUN_RUNBOOK_DEBUG:-false}" =~ (true|on|1) ]] ; then
+  echo "--- :octopus-deploy: Enabling debug mode"
+  env | sort | grep BUILDKITE_PLUGIN_RUN_RUNBOOK
+fi
+
+# Reads either a value or a list from plugin config into a global result array
+# Returns success if values were read
+function plugin_read_list_into_result() {
+  local prefix="$1"
+  local parameter="${prefix}_0"
+  result=()
+
+  if [[ -n "${!parameter:-}" ]]; then
+    local i=0
+    local parameter="${prefix}_${i}"
+    while [[ -n "${!parameter:-}" ]]; do
+      result+=("${!parameter}")
+      i=$((i+1))
+      parameter="${prefix}_${i}"
+    done
+  elif [[ -n "${!prefix:-}" ]]; then
+    result+=("${!prefix}")
+  fi
+
+  [[ ${#result[@]} -gt 0 ]] || return 1
+}
+
+function plugin_read_list_into_commaseparated_string() {
+  local IFS=,
+  shift
+  echo "$*"
+}
+
+cmd=( "run-runbook" )
+
+#cancel_on_timeout:
+if [[ -n "${BUILDKITE_PLUGIN_RUN_RUNBOOK_CANCEL_ON_TIMEOUT:-}" ]]; then
+    cmd+=( "--cancelOnTimeout" "${BUILDKITE_PLUGIN_RUN_RUNBOOK_CANCEL_ON_TIMEOUT}" )
+fi
+
+#config_file:
+if [[ -n "${BUILDKITE_PLUGIN_RUN_RUNBOOK_CONFIG_FILE:-}" ]]; then
+    cmd+=( "--configFile" "${BUILDKITE_PLUGIN_RUN_RUNBOOK_CONFIG_FILE}")
+fi
+
+#debug:
+if [[ "${BUILDKITE_PLUGIN_RUN_RUNBOOK_DEBUG:-false}" =~ ^(true|on|1)$ ]]; then
+    cmd+=( "--debug" )
+fi
+
+#environments:
+if plugin_read_list_into_result BUILDKITE_PLUGIN_RUN_RUNBOOK_ENVIRONMENTS ; then
+  for environment in "${result[@]}" ; do
+    cmd+=( "--environment" "${environment}" )
+  done
+fi
+
+#exclude_machines:
+if plugin_read_list_into_result BUILDKITE_PLUGIN_RUN_RUNBOOK_EXCLUDE_MACHINES ; then
+  cmd+=( "--excludeMachines" plugin_read_list_into_commaseparated_string BUILDKITE_PLUGIN_RUN_RUNBOOK_EXCLUDE_MACHINES )
+fi
+
+#force_package_download:
+if [[ "${BUILDKITE_PLUGIN_RUN_RUNBOOK_FORCE_PACKAGE_DOWNLOAD:-false}" =~ ^(true|on|1)$ ]]; then
+    cmd+=( "--forcePackageDownload" )
+fi
+
+#guided_failure:
+if [[ "${BUILDKITE_PLUGIN_RUN_RUNBOOK_GUIDED_FAILURE:-false}" =~ ^(true|on|1)$ ]]; then
+    cmd+=( "--guidedFailure" )
+fi
+
+#ignore_ssl_errors:
+if [[ "${BUILDKITE_PLUGIN_RUN_RUNBOOK_IGNORE_SSL_ERRORS:-false}" =~ ^(true|on|1)$ ]]; then
+    cmd+=( "--ignoreSslErrors" )
+fi
+
+#log_level:
+if [[ -n "${BUILDKITE_PLUGIN_RUN_RUNBOOK_LOG_LEVEL:-}" ]]; then
+    cmd+=( "--logLevel" "${BUILDKITE_PLUGIN_RUN_RUNBOOK_LOG_LEVEL}")
+fi
+
+#no_raw_log:
+if [[ "${BUILDKITE_PLUGIN_RUN_RUNBOOK_NO_RAW_LOG:-false}" =~ ^(true|on|1)$ ]]; then
+    cmd+=( "--noRawLog" )
+fi
+
+#no_run_after:
+if [[ -n "${BUILDKITE_PLUGIN_RUN_RUNBOOK_NO_RUN_AFTER:-}" ]]; then
+    cmd+=( "--noRunAfter" "${BUILDKITE_PLUGIN_RUN_RUNBOOK_NO_RUN_AFTER}" )
+fi
+
+#project:
+if [[ -n "${BUILDKITE_PLUGIN_RUN_RUNBOOK_PROJECT:-}" ]]; then
+    cmd+=( "--project" "${BUILDKITE_PLUGIN_RUN_RUNBOOK_PROJECT}" )
+fi
+
+#proxy:
+if [[ -n "${BUILDKITE_PLUGIN_RUN_RUNBOOK_PROXY:-}" ]]; then
+    cmd+=( "--proxy" "${BUILDKITE_PLUGIN_RUN_RUNBOOK_PROXY}" )
+fi
+
+#proxy_username:
+if [[ -n "${BUILDKITE_PLUGIN_RUN_RUNBOOK_PROXY_USERNAME:-}" ]]; then
+    cmd+=( "--proxyUser" "${BUILDKITE_PLUGIN_RUN_RUNBOOK_PROXY_USERNAME}" )
+fi
+
+#proxy_password:
+if [[ -n "${BUILDKITE_PLUGIN_RUN_RUNBOOK_PROXY_PASSWORD:-}" ]]; then
+    cmd+=( "--proxyPass" "${BUILDKITE_PLUGIN_RUN_RUNBOOK_PROXY_PASSWORD}" )
+fi
+
+#raw_log_file:
+if [[ -n "${BUILDKITE_PLUGIN_RUN_RUNBOOK_RAW_LOG_FILE:-}" ]]; then
+    cmd+=( "--rawLogFile" "${BUILDKITE_PLUGIN_RUN_RUNBOOK_RAW_LOG_FILE}" )
+fi
+
+#run_at:
+if [[ -n "${BUILDKITE_PLUGIN_RUN_RUNBOOK_RUN_AT:-}" ]]; then
+    cmd+=( "--runAt" "${BUILDKITE_PLUGIN_RUN_RUNBOOK_RUN_AT}" )
+fi
+
+#runbook:
+if [[ -n "${BUILDKITE_PLUGIN_RUN_RUNBOOK_RUNBOOK:-}" ]]; then
+    cmd+=( "--runbook" "${BUILDKITE_PLUGIN_RUN_RUNBOOK_RUNBOOK}" )
+fi
+
+#run_timeout:
+if [[ -n "${BUILDKITE_PLUGIN_RUN_RUNBOOK_RUN_TIMEOUT:-}" ]]; then
+    cmd+=( "--runTimeout" "${BUILDKITE_PLUGIN_RUN_RUNBOOK_RUN_TIMEOUT}" )
+fi
+
+#show_progress:
+if [[ "${BUILDKITE_PLUGIN_RUN_RUNBOOK_SHOW_PROGRESS:-false}" =~ ^(true|on|1)$ ]]; then
+    cmd+=( "--showProgress" )
+fi
+
+#skip:
+if [[ -n "${BUILDKITE_PLUGIN_RUN_RUNBOOK_SKIP:-}" ]]; then
+    cmd+=( "--skip" "${BUILDKITE_PLUGIN_RUN_RUNBOOK_SKIP}" )
+fi
+
+#snapshot:
+if [[ -n "${BUILDKITE_PLUGIN_RUN_RUNBOOK_SNAPSHOT:-}" ]]; then
+    cmd+=( "--snapshot" "${BUILDKITE_PLUGIN_RUN_RUNBOOK_SNAPSHOT}" )
+fi
+
+#space:
+if [[ -n "${BUILDKITE_PLUGIN_RUN_RUNBOOK_SPACE:-}" ]]; then
+    cmd+=( "--space" "\"${BUILDKITE_PLUGIN_RUN_RUNBOOK_SPACE}\"" )
+fi
+
+#specific_machines:
+if plugin_read_list_into_result BUILDKITE_PLUGIN_RUN_RUNBOOK_SPECIFIC_MACHINES ; then
+  cmd+=( "--specificMachines" plugin_read_list_into_commaseparated_string BUILDKITE_PLUGIN_RUN_RUNBOOK_SPECIFIC_MACHINES )
+fi
+
+#tenants:
+if plugin_read_list_into_result BUILDKITE_PLUGIN_RUN_RUNBOOK_TENANTS ; then
+  for tenant in "${result[@]}" ; do
+    cmd+=( "--tenant" "${tenant}" )
+  done
+fi
+
+#tenant_tags:
+if plugin_read_list_into_result BUILDKITE_PLUGIN_RUN_RUNBOOK_TENANT_TAGS ; then
+  for tag in "${result[@]}" ; do
+    cmd+=( "--tenantTag" "${tag}" )
+  done
+fi
+
+#timeout:
+if [[ -n "${BUILDKITE_PLUGIN_RUN_RUNBOOK_TIMEOUT:-}" ]]; then
+    cmd+=( "--timeout" "\"${BUILDKITE_PLUGIN_RUN_RUNBOOK_TIMEOUT}\"" )
+fi
+
+#variable:
+if plugin_read_list_into_result BUILDKITE_PLUGIN_RUN_RUNBOOK_VARIABLES ; then
+  for variable in "${result[@]}" ; do
+    cmd+=( "--variable" "${variable}" )
+  done
+fi
+
+#wait_for_run:
+if [[ "${BUILDKITE_PLUGIN_RUN_RUNBOOK_WAIT_FOR_RUN:-false}" =~ ^(true|on|1)$ ]]; then
+    cmd+=( "--waitForRun" )
+fi
+
+args=()
+maskedArgs=()
+#server:
+if [[ -n "${BUILDKITE_PLUGIN_RUN_RUNBOOK_SERVER:-}" ]]; then
+    args+=( "--server" "${BUILDKITE_PLUGIN_RUN_RUNBOOK_SERVER}" )
+    maskedArgs+=( "--server" "${BUILDKITE_PLUGIN_RUN_RUNBOOK_SERVER}" )
+fi
+
+#api_key:
+if [[ -n "${BUILDKITE_PLUGIN_RUN_RUNBOOK_API_KEY:-}" ]]; then
+    args+=( "--apiKey" "${BUILDKITE_PLUGIN_RUN_RUNBOOK_API_KEY}" )
+    maskedArgs+=( "--apiKey" "SECRET" )
+fi
+
+echo "+++ :octopus-deploy: Running create-release"
+echo "Running command: ${cmd[@]} ${maskedArgs[@]}"
+
+octo ${cmd[@]} ${args[@]}
