@@ -21,14 +21,13 @@ Incorporate the following step in your `pipeline.yml` to create a release in Oct
 ```yml
 steps:
   - label: Run runbook in Octopus Deploy 🐙
-    env:
-      OCTOPUS_CLI_SERVER: 'https://octopus.url'
-      OCTOPUS_CLI_API_KEY: 'API-xxxxxx'
     plugins: 
-      - OctopusDeploy/run-runbook@<version>
-        runbook: 'Greeting'
-        project: 'HelloWorld'
-        environments: 'Test'
+      - OctopusDeploy/run-runbook#v0.0.1:
+          api_key: "${MY_OCTOPUS_API_KEY}"
+          environments: "Test"
+          project: "Hello World"
+          runbook: "Greeting"
+          server: "${MY_OCTOPUS_SERVER}"
 ```
 
 **Run a runbook using a specific snapshot**
@@ -36,15 +35,14 @@ steps:
 ```yml
 steps:
   - label: Run runbook in Octopus Deploy 🐙
-    env:
-      OCTOPUS_CLI_SERVER: 'https://octopus.url'
-      OCTOPUS_CLI_API_KEY: 'API-xxxxxx'
     plugins: 
-      - OctopusDeploy/run-runbook@<version>
-        runbook: 'Greeting'
-        project: 'HelloWorld'
-        environments: 'Test'
-        snapshot: 'KGHSL3L'
+      - OctopusDeploy/run-runbook#v0.0.1:
+          api_key: "${MY_OCTOPUS_API_KEY}"
+          environments: "Test"
+          project: "Hello World"
+          runbook: "Greeting"
+          server: "${MY_OCTOPUS_SERVER}"
+          snapshot: "KGHSL3L"
 ```
 
 **Run a runbook in multiple environments**
@@ -52,16 +50,15 @@ steps:
 ```yml
 steps:
   - label: Run a runbook in Octopus Deploy 🐙
-    env:
-      OCTOPUS_CLI_SERVER: 'https://octopus.url'
-      OCTOPUS_CLI_API_KEY: 'API-xxxxxx'
     plugins: 
-      - OctopusDeploy/run-runbook@<version>
-        runbook: 'Greeting'
-        project: 'HelloWorld'
-        environments:
-          - 'Dev'
-          - 'Test'
+      - OctopusDeploy/run-runbook#v0.0.1:
+          api_key: "${MY_OCTOPUS_API_KEY}"
+          environments:
+            - "Dev"
+            - "Test"
+          project: "Hello World"
+          runbook: "Greeting"
+          server: "${MY_OCTOPUS_SERVER}"
 ```
 
 ## 📥 Inputs

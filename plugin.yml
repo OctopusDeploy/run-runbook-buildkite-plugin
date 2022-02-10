@@ -119,5 +119,5 @@ configuration:
   required:
     - project
     - runbook
-    - environment
+    - environments
   additionalProperties: false
