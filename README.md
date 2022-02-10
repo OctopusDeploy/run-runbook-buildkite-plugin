@@ -12,8 +12,6 @@ Runbooks automate routine maintenance and emergency operations tasks, such as in
 
 Incorporate the following step in your `pipeline.yml` to create a release in Octopus Deploy:
 
-**NOTE: These examples configure the Octopus server and API Key environment variables in the `pipeline.yml` file, this is NOT recommended and these should be configured as environment variables on the Buildkite agent.**
-
 ### Basic examples
 
 **Run a runbook using the published snapshot**
