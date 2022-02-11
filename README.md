@@ -32,7 +32,7 @@ steps:
 
 ```yml
 steps:
-  - label: :octopus-deploy: Run runbook in Octopus Deploy
+  - label: ":octopus-deploy: Run runbook in Octopus Deploy"
     plugins: 
       - OctopusDeploy/run-runbook#v0.0.1:
           api_key: "${MY_OCTOPUS_API_KEY}"
@@ -47,7 +47,7 @@ steps:
 
 ```yml
 steps:
-  - label: :octopus-deploy: Run a runbook in Octopus Deploy
+  - label: ":octopus-deploy: Run a runbook in Octopus Deploy"
     plugins: 
       - OctopusDeploy/run-runbook#v0.0.1:
           api_key: "${MY_OCTOPUS_API_KEY}"
