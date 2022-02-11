@@ -20,7 +20,7 @@ Incorporate the following step in your `pipeline.yml` to create a release in Oct
 steps:
   - label: ":octopus-deploy: Run runbook in Octopus Deploy"
     plugins: 
-      - OctopusDeploy/run-runbook#v0.0.1:
+      - OctopusDeploy/run-runbook#v0.1.0:
           api_key: "${MY_OCTOPUS_API_KEY}"
           environments: "Test"
           project: "Hello World"
@@ -34,7 +34,7 @@ steps:
 steps:
   - label: ":octopus-deploy: Run runbook in Octopus Deploy"
     plugins: 
-      - OctopusDeploy/run-runbook#v0.0.1:
+      - OctopusDeploy/run-runbook#v0.1.0:
           api_key: "${MY_OCTOPUS_API_KEY}"
           environments: "Test"
           project: "Hello World"
@@ -49,7 +49,7 @@ steps:
 steps:
   - label: ":octopus-deploy: Run a runbook in Octopus Deploy"
     plugins: 
-      - OctopusDeploy/run-runbook#v0.0.1:
+      - OctopusDeploy/run-runbook#v0.1.0:
           api_key: "${MY_OCTOPUS_API_KEY}"
           environments:
             - "Dev"
