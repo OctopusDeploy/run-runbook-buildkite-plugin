@@ -1,6 +1,8 @@
 # Run Runbook Buildkite Plugin
 
-This is a Buildkite plugin to run a runbook in [Octopus Deploy](https://octopus.com/). 
+![image](https://user-images.githubusercontent.com/71493/153728204-b1982870-86f9-4e91-b317-bb9247e19da8.png)
+
+This is a [Buildkite](https://buildkite.com/) plugin to run a runbook in [Octopus Deploy](https://octopus.com/). 
 
 **This plugin requires [Octopus CLI](https://octopus.com/downloads/octopuscli) to be installed on the Buildkite agent.**
 
