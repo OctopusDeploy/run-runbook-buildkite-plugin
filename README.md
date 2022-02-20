@@ -61,6 +61,16 @@ steps:
           server: "${MY_OCTOPUS_SERVER}"
 ```
 
+## Configuring
+
+### `OCTOPUS_CLI_SERVER`
+
+Your Octopus Server URL should be set to this environment variable, or you can use `server` in the steps of your pipeline instead.
+
+### `OCTOPUS_CLI_API_KEY`
+
+Your Octopus Server API key should be set to this environment variable, either in your pipeline’s environment variable settings or exposed in an [environment hook](https://buildkite.com/docs/pipelines/secrets#storing-secrets-in-environment-hooks). If you need different keys for different steps in your pipeline use `api_key` instead.
+
 ## 📥 Inputs
 
 **The following input is required:**
@@ -75,7 +85,7 @@ steps:
 
 | Name                     | Description                                                                                                                                                                                                                                                       |  Default   |
 | :----------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------: |
-| `api_key`                | The API key used to access Octopus Deploy. This value is required if credentials (`username` and `password`) are unspecified. `API-GUEST` may be used if the guest account is enabled. It is strongly recommended that this value retrieved from a GitHub secret. |            |
+| `api_key`                      | The environment variable that is configured with your Octopus Server API key used to access Octopus Deploy. Use this if you need to specify different keys for different steps in your pipeline.
 | `cancel_on_timeout`      | Cancel the deployment if `deployment_timeout` is exceeded (default: 10 minutes).                                                                                                                                                                                  |  `false`   |
 | `config_file`            | The path to a configuration file of default values with one `key=value` per line.                                                                                                                                                                                 |            |
 | `debug`                  | Enable debug logging.                                                                                                                                                                                                                                             |  `false`   |

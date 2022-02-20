@@ -85,3 +85,27 @@ load "$BATS_PATH/load.bash"
     unset BUILDKITE_PLUGIN_RUN_RUNBOOK_PROJECT
     unset BUILDKITE_PLUGIN_RUN_RUNBOOK_RUNBOOK
 }
+
+@test "Run runbook command overriding Server URL and API Key" {
+    export FAKE_API_KEY="API-123"
+    export BUILDKITE_PLUGIN_RUN_RUNBOOK_API_KEY="FAKE_API_KEY"
+    export BUILDKITE_PLUGIN_RUN_RUNBOOK_SERVER="https://octopus.example"
+    export BUILDKITE_PLUGIN_RUN_RUNBOOK_ENVIRONMENTS="Test"
+    export BUILDKITE_PLUGIN_RUN_RUNBOOK_PROJECT="Test project"
+    export BUILDKITE_PLUGIN_RUN_RUNBOOK_RUNBOOK="Test runbook"
+
+    stub octo "run-runbook --environment Test --project 'Test project' --runbook 'Test runbook' --server https://octopus.example --apiKey API-123 : echo octo command ran"
+
+    run $PWD/hooks/command
+
+    assert_output --partial "octo command ran"
+    assert_success
+
+    unstub octo
+    unset BUILDKITE_PLUGIN_RUN_RUNBOOK_ENVIRONMENTS
+    unset BUILDKITE_PLUGIN_RUN_RUNBOOK_PROJECT
+    unset BUILDKITE_PLUGIN_RUN_RUNBOOK_RUNBOOK
+    unset FAKE_API_KEY
+    unset BUILDKITE_PLUGIN_RUN_RUNBOOK_API_KEY
+    unset BUILDKITE_PLUGIN_RUN_RUNBOOK_SERVER
+}
