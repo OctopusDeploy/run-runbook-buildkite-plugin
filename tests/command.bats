@@ -1,9 +1,11 @@
 #!/usr/bin/env bats
 
-load "$BATS_PATH/load.bash"
-
-# Uncomment to enable stub debug output:
-# export OCTO_STUB_DEBUG=/dev/tty
+setup() {
+    load "$BATS_PATH/load.bash"
+    
+    # Uncomment to enable stub debug output:
+    # export OCTO_STUB_DEBUG=/dev/tty
+}
 
 @test "Run runbook command" {
     export BUILDKITE_PLUGIN_RUN_RUNBOOK_ENVIRONMENTS="Test"
