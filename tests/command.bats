@@ -1,7 +1,8 @@
 #!/usr/bin/env bats
 
 setup() {
-    load "$BATS_PATH/load.bash"
+    # plugin-tester v4 sets BATS_PLUGIN_PATH; older images set BATS_PATH
+    load "${BATS_PLUGIN_PATH:-${BATS_PATH:-}}/load.bash"
     
     # Uncomment to enable stub debug output:
     # export OCTO_STUB_DEBUG=/dev/tty
